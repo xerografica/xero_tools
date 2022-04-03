@@ -151,10 +151,10 @@ tail(activity_buys.df)
 write.csv(x = activity_buys.df, file = "output/activity_buys_with_mean_fiat.csv", row.names = F)
 
 
-
 ##### Sales #####
 activity_sales.df <- activity.df[activity.df$Type=="sale", ]
 
+##### Primary Sales ######
 # Primary sales (keep only those created by user)
 activity_sales_primary.df <- activity_sales.df[activity_sales.df$Creator==username, ]
 dim(activity_sales_primary.df)
@@ -162,50 +162,75 @@ head(activity_sales_primary.df)
 
 tail(activity_sales_primary.df)
 
+# Total earned on created NFT in fiat this year
 total_earned_primary <- sum(activity_sales_primary.df$Total.fiat)
 total_earned_primary
+# TAX OBJECT
 
+# Number of created objkts sold this year
 number_objkts_sold_primary <- nrow(activity_sales_primary.df)
 number_objkts_sold_primary
 
-####### Secondary #######
+write.csv(x = activity_sales_primary.df, file = "output/activity_sales_with_fiat_out.csv", row.names = F)
+
+
+####### Secondary Sales #######
 activity_sales_secondary.df <- activity_sales.df[activity_sales.df$Creator!=username, ]
 dim(activity_sales_secondary.df)
-activity_sales_secondary.df
+head(activity_sales_secondary.df)
 
-## create df for buys
-activity_buys.df <- activity.df[activity.df$Type=="buy",]
-head(activity_buys.df)
-dim(activity_buys.df)
+## TODO: this should be done earlier, on the initial dataframe
+# Create unique ID
+activity_sales_secondary.df$ID_token_creator <- paste0(activity_sales_secondary.df$Token
+                                                       , "__"
+                                                       , activity_sales_secondary.df$Creator
+                                                       )
+head(activity_sales_secondary.df)
 
-# Show the number of purchases held
-table(activity_buys.df$Token)
+# Find the average purchase price of the sold item and add to the df
+# First determine if the number of sales is more than one per objkt, if so, does not support
+
+if( isTRUE(table(activity_sales_secondary.df$ID_token_creator) > 1) == TRUE ){
+  
+  print("This function not yet supported")
+  
+}else if(isTRUE(table(activity_sales_secondary.df$ID_token_creator) > 1) == FALSE){
+  
+  print("OK to proceed, only a single objkt was sold for each unique ID")
+  
+}
+
+# Example for one
+activity_buys.df[activity_buys.df$ID_token_creator=="#175130__x3r0ne", "mean.total.fiat"]
+cost_for_NFT <- as.numeric(activity_buys.df[activity_buys.df$ID_token_creator=="#175130__x3r0ne", "mean.total.fiat"][1])
+gains <- activity_sales_secondary.df[activity_sales_secondary.df$ID_token_creator=="#175130__x3r0ne", "Total.fiat"] - -(cost_for_NFT)
+  
+# put into a loop # TODO
+
+
+
 
 ## TODO: There must be a way to remove a line item once it has been accounted (sold), then carry forward what remains
 
-## Need to determine if you have sold more than one copy of any NFT, and if so, how many have you sold? 
 
-# For now, just check if you have any instances of multiple sales of the same objkt
-table(table(activity_sales_secondary.df$Token) > 1) # if all FALSE, then only consider the first instance of each buy
-
-
-# Only consider the buys that have been sold
-secondary_details.df <- merge(x = activity_sales_secondary.df, y = activity_buys.df, by = "Token"
-                              #, all.x = TRUE
-                              )
-head(secondary_details.df)
-
-# Hacky approach
-secondary_details.df <- secondary_details.df[!duplicated(secondary_details.df$Token), ]
-secondary_details.df
-
-secondary_details.df$gains <- secondary_details.df$Total.fiat.x + secondary_details.df$Total.fiat.y
-total_earned_secondary <- sum(secondary_details.df$gains)
-total_earned_secondary
-
-number_objkts_sold_secondary <- nrow(secondary_details.df)
-number_objkts_sold_secondary
-
+### Code skeletons ####
+# # Only consider the buys that have been sold
+# secondary_details.df <- merge(x = activity_sales_secondary.df, y = activity_buys.df, by = "Token"
+#                               #, all.x = TRUE
+#                               )
+# head(secondary_details.df)
+# 
+# # Hacky approach
+# secondary_details.df <- secondary_details.df[!duplicated(secondary_details.df$Token), ]
+# secondary_details.df
+# 
+# secondary_details.df$gains <- secondary_details.df$Total.fiat.x + secondary_details.df$Total.fiat.y
+# total_earned_secondary <- sum(secondary_details.df$gains)
+# total_earned_secondary
+# 
+# number_objkts_sold_secondary <- nrow(secondary_details.df)
+# number_objkts_sold_secondary
+# 
 
 
 #summarize
