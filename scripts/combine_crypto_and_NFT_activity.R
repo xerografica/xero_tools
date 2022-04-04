@@ -30,6 +30,7 @@ head(activity.df)
 activity.df$amount <- NA
 str(activity.df)
 
+#### SAVE POINT ####
 # Simple rbind to join the crypto activity and the NFT activity
 all.df <- rbind(withdrawal.df, activity.df)
 str(all.df)
@@ -42,13 +43,25 @@ dim(activity.df)
 all.df <- all.df[order(all.df$date), ]
 
 # Add columns to be filled through the calculations loop
+# NOTE: may need to use as.numeric(rep(x = NA, times = nrow(all.df)))
 all.df$gains.crypto <- NA
 all.df$losses.crypto <- NA
+
 all.df$gains.NFT <- NA
 all.df$losses.NFT <- NA
+
 all.df$fiat.val.of.NFT.indiv <- NA
 all.df$fiat.val.of.NFT.all <- NA
+
 all.df$current.crypto.val <- NA
 all.df$current.crypto.vol <- NA
+
+# Other cols needed
+all.df$amt_spent_fiat     <- as.numeric(rep(x = NA, times = nrow(all.df))) # amount spent for crypto this trade
+all.df$trade_vol          <- as.numeric(rep(x = NA, times = nrow(all.df))) # Volume this trade
+all.df$trade_mean_price   <- as.numeric(rep(x = NA, times = nrow(all.df))) # Average price this trade
+
+head(all.df)
+
 
 # GO TO calc_loop.R

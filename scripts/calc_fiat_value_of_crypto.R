@@ -2,15 +2,6 @@
 current.df <- all.df[1,]
 
 #### Calculate the value of bought tezos for each day
-# Create dummy cols
-withdrawal.df$amt_spent_fiat     <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
-withdrawal.df$trade_vol          <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
-withdrawal.df$trade_mean_price   <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
-
-withdrawal.df$current.crypto.vol  <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
-withdrawal.df$current.crypto.val <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
-
-withdrawal.df
 
 
 # Loop over each transaction
