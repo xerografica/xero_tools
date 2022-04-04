@@ -61,7 +61,10 @@ all.df$amt_spent_fiat     <- as.numeric(rep(x = NA, times = nrow(all.df))) # amo
 all.df$trade_vol          <- as.numeric(rep(x = NA, times = nrow(all.df))) # Volume this trade
 all.df$trade_mean_price   <- as.numeric(rep(x = NA, times = nrow(all.df))) # Average price this trade
 
+all.df$position <- c("initial", rep("subsequent", times = (nrow(all.df)-1) ))
+
 head(all.df)
 
+# WILL NEED THE POSITION PRIOR IF A SUBSEQUENT TRANSACTION
 
 # GO TO calc_loop.R

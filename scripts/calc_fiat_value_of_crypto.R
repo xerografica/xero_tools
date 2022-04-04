@@ -1,7 +1,7 @@
 # Operations on crypto buy (initial or subsequent)
 # 2022-04-04
-crypto_buy <- function(df = all.df, position = "initial", current_crypto_vol = "NA", current_crypto_val = "NA"
-                       , transaction_index = "i"){
+# crypto_buy <- function(df = all.df, position = "initial", current_crypto_vol = "NA", current_crypto_val = "NA"
+#                        , transaction_index = "i"){
   # Position can be initial or subsequent
   
   if(all.df$type[i]=="CRYPTO"){
@@ -63,16 +63,13 @@ crypto_buy <- function(df = all.df, position = "initial", current_crypto_vol = "
     
   }
   
-  
-  
-  
   completed_table.df
   
   
   
   
   
-}
+#}
 
 
 
@@ -91,9 +88,6 @@ current.vol <- all.df[(slice-1), "current.crypto.vol"]
 current.val <- all.df[(slice-1), "current.crypto.val"]
 
 #### Calculate the value of bought tezos for each day
-
-
-
 
 
 ### Notes: 
