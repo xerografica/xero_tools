@@ -1,6 +1,5 @@
-# BACKUP
-#withdrawal.df.bck <- withdrawal.df
-#withdrawal.df <- withdrawal.df.bck
+# PREP, obtaining relevant row
+current.df <- all.df[1,]
 
 #### Calculate the value of bought tezos for each day
 # Create dummy cols
@@ -8,8 +7,8 @@ withdrawal.df$amt_spent_fiat     <- as.numeric(rep(x = NA, times = nrow(withdraw
 withdrawal.df$trade_vol          <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
 withdrawal.df$trade_mean_price   <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
 
-withdrawal.df$overall_total_vol  <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
-withdrawal.df$overall_mean_price <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
+withdrawal.df$current.crypto.vol  <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
+withdrawal.df$current.crypto.val <- as.numeric(rep(x = NA, times = nrow(withdrawal.df)))
 
 withdrawal.df
 
@@ -42,12 +41,12 @@ for(i in 1:nrow(withdrawal.df)){
   # If it is the first record of the year, add the initial volume to the amount currently withdrawn
   if(i==1){
     
-    withdrawal.df$overall_total_vol[i] <- initial.volume + withdrawal.df$amount[i]
+    withdrawal.df$current.crypto.vol[i] <- initial.volume + withdrawal.df$amount[i]
     
   # If it is not the first record of the year, add the current amount to the previous total
   }else if(i!=1){
     
-    withdrawal.df$overall_total_vol[i] <- withdrawal.df$overall_total_vol[i-1] + withdrawal.df$amount[i]
+    withdrawal.df$current.crypto.vol[i] <- withdrawal.df$current.crypto.vol[i-1] + withdrawal.df$amount[i]
     
   }
   
@@ -64,13 +63,13 @@ for(i in 1:nrow(withdrawal.df)){
   
   if(i==1){
     
-    withdrawal.df$overall_mean_price[i] <- ((withdrawal.df$trade_mean_price[i] * withdrawal.df$trade_vol[i]) + (initial.value * initial.volume)) / withdrawal.df$overall_total_vol[i]
+    withdrawal.df$current.crypto.val[i] <- ((withdrawal.df$trade_mean_price[i] * withdrawal.df$trade_vol[i]) + (initial.value * initial.volume)) / withdrawal.df$current.crypto.vol[i]
     
   }else if(i!=1){
     
-    withdrawal.df$overall_mean_price[i] <- ((withdrawal.df$trade_mean_price[i] * withdrawal.df$trade_vol[i]) + 
-                                              (withdrawal.df$overall_mean_price[i-1] * withdrawal.df$overall_total_vol[i-1])) / 
-                                                                      withdrawal.df$overall_total_vol[i]
+    withdrawal.df$current.crypto.val[i] <- ((withdrawal.df$trade_mean_price[i] * withdrawal.df$trade_vol[i]) + 
+                                              (withdrawal.df$current.crypto.val[i-1] * withdrawal.df$current.crypto.vol[i-1])) / 
+                                                                      withdrawal.df$current.crypto.vol[i]
     
   }
   
