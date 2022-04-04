@@ -30,8 +30,29 @@ You can have as many different withdrawals from different exchanges, as long as 
 Copy these three items into the `inputs` folder.      
 
 
-### 01. Find your price of tezos, and track over transactions
-Inputs:     
-- tezos transactions from cryptocurrency exchange
+### 01. Initiate and Load inputs
+Open `initiator.R` from Rstudio, set the following variables and launch:          
+`input_convert.FN` ...is your crypto-fiat conversion table.       
+`currency`     
+`coin`     
+`year`     
+`wallet_activity.FN`      
+`username`       
+`initial.value` this is the value of your coin at the start of the year (how much each is worth).     
+`initial.volume` this is the initial volume of your coin at the start of the year.       
+If you had no tezos at the start of the year, set both as 0.    
+
+Then run `import_crypto_buys.R` to create withdrawal.df, which contains the withdrawal details of your coin off the exchange, and assumes that the acquisition of the coin occurred on that day.         
+
+Then run `import_NFT_activity.R` to import your wallet buy/ sell activity of NFTs.      
+
+Then run `import_crypto_to_fiat.R` to bring in your crypto-fiat conversion table.      
+
+
+### 02. Calculate gains and losses per transaction
+Inputs are:     
+`withdrawal.df`        
+`activity.df`       
+`convert.df`       
 
 
