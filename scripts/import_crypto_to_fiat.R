@@ -22,3 +22,5 @@ convert.df <- convert.df[, c("Date.corr", "Price")]
 str(convert.df)
 
 
+### Go to combine_crypto_and_NFT_activity.R
+

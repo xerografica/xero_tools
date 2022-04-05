@@ -25,6 +25,14 @@ coin <- "XTZ"
 year <- 2021
 wallet_activity.FN <- "input/activity.csv"
 username <- "xerografica"
+demo.version <- "no"
+#demo.version <- "yes"
+
+if(demo.version=="yes"){
+  
+  wallet_activity.FN <- "input/demo_activity.csv"
+  
+}
 
 # Set the initial per coin value (0 if no coin)
 initial.value <- 0

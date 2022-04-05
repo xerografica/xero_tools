@@ -42,11 +42,22 @@ Open `initiator.R` from Rstudio, set the following variables and launch:
 `initial.volume` this is the initial volume of your coin at the start of the year.       
 If you had no tezos at the start of the year, set both as 0.    
 
-Then run `import_crypto_buys.R` to create withdrawal.df, which contains the withdrawal details of your coin off the exchange, and assumes that the acquisition of the coin occurred on that day.         
+If you are testing the demo version, change the variable demo.version to "yes". This will use the test data (`demo_activity.csv`).       
 
-Then run `import_NFT_activity.R` to import your wallet buy/ sell activity of NFTs.      
+Run `import_crypto_buys.R` to create withdrawal.df, which contains the withdrawal details of your coin off the exchange, and assumes that the acquisition of the coin occurred on that day. Generates `withdrawal.df`.         
 
-Then run `import_crypto_to_fiat.R` to bring in your crypto-fiat conversion table.      
+Run `import_NFT_activity.R` to import your wallet buy/ sell activity of NFTs.      
+(todo: add multiple wallet activity functionality)      
+
+Run `import_crypto_to_fiat.R` to bring in your crypto-fiat conversion table.      
+
+Format:     
+| Date | Price | Open | High | Low | Vol. | Change.. |
+|------|-------|------|------|-----|------|----------|
+| Dec 31, 2021 | 5.4918|5.5337|5.7455|5.3032|-|-0.76%|
+
+...note: we will only be using the columns 'Date' and 'Price'      
+Generates `convert.df`     
 
 
 ### 02. Calculate gains and losses per transaction
@@ -55,4 +66,8 @@ Inputs are:
 `activity.df`       
 `convert.df`       
 
+Run the script `scripts/combine_crypto_and_NFT_activity.R`.        
+This script will bring in the withdrawal history and the NFT activity and combine them into all.df, which is the input for the analysis.       
+
+Go to `calc_loop.R` to complete the table.       
 

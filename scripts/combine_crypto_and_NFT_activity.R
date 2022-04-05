@@ -40,7 +40,7 @@ dim(withdrawal.df)
 dim(activity.df)
 
 # Now all are in the same dataframe, proceed. 
-all.df <- all.df[order(all.df$date), ]
+all.df <- all.df[order(all.df$date, all.df$Type), ]
 
 # Add columns to be filled through the calculations loop
 # NOTE: may need to use as.numeric(rep(x = NA, times = nrow(all.df)))
@@ -60,6 +60,9 @@ all.df$current.crypto.vol <- NA
 all.df$amt_spent_fiat     <- as.numeric(rep(x = NA, times = nrow(all.df))) # amount spent for crypto this trade
 all.df$trade_vol          <- as.numeric(rep(x = NA, times = nrow(all.df))) # Volume this trade
 all.df$trade_mean_price   <- as.numeric(rep(x = NA, times = nrow(all.df))) # Average price this trade
+all.df$Total <- as.numeric(all.df$Total)
+all.df$inventory <- NA
+
 
 all.df$position <- c("initial", rep("subsequent", times = (nrow(all.df)-1) ))
 

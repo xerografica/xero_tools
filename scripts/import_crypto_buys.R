@@ -1,5 +1,5 @@
 # Imports the crypto buys based on withdrawals from exchanges
-# NOTE: assumes that withdrawals in xtz mean the xtz was purchased that day
+# NOTE: assumes that withdrawals in coin mean the coin was purchased that day
 
 # Set filename as, for example: "kucoin_withdrawal_history_<date>.csv"
 withdrawal.FN <- list.files(path = "input", pattern = "_withdrawal_history_", full.names = TRUE)
