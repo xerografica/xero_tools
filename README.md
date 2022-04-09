@@ -4,6 +4,10 @@
 
 This is an experimental repository specifically designed for the needs of the author(s) and comes with no guarantees for other uses.     
 
+Items not handled yet as of current version:       
+- burning
+- transferred NFTs (OTC; not bought) are removed
+
 
 ### 00. Setup
 To use this repository, you will the following items:     
@@ -33,17 +37,21 @@ Copy these three items into the `inputs` folder.
 
 
 ### 01. Initiate and Load inputs
-Open `initiator.R` from Rstudio, set the following variables and launch:          
-`input_convert.FN` ...is your crypto-fiat conversion table.       
-`currency`     
-`coin`     
-`year`     
-`wallet_activity.FN`      
-`username`       
-`initial.value` this is the value of your coin at the start of the year (how much each is worth).     
-`initial.volume` this is the initial volume of your coin at the start of the year.       
-If you had no tezos at the start of the year, set both as 0.    
+Open `initiator.R` from Rstudio, set the following variables and launch:         
+```
+input_convert.FN # crypto-fiat conversion table.  
+currency    
+coin 
+year 
+wallet_activity.FN   
+username 
 
+# Initial Values:   
+initial.value    # value of your coin at the start of the year (how much each is worth).     
+initial.volume   # initial volume of your coin at the start of the year.       
+# note: If you had no tezos at the start of the year, set both as 0.    
+
+``` 
 If you are testing the demo version, change the variable demo.version to "yes". This will use the test data (`demo_activity.csv`).       
 
 Run `import_crypto_buys.R` to create withdrawal.df, which contains the withdrawal details of your coin off the exchange, and assumes that the acquisition of the coin occurred on that day. Generates `withdrawal.df`.         

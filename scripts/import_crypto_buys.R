@@ -31,11 +31,10 @@ withdrawal.df <- withdrawal.df[order(withdrawal.df$date), ]
 coin
 withdrawal.df <- withdrawal.df[grep(pattern = coin, x = withdrawal.df$coin), ]
 
-# TEMP # Keep only year of interest
+# Keep only year of interest
 withdrawal.df <- withdrawal.df[grep(pattern = year, x = withdrawal.df$date), ]
 
+# Here is the details of crypto coin acquisition
 withdrawal.df
-
-# This df will then be merged with NFT activity log
 
 # GOTO: import_NFT_activity.R

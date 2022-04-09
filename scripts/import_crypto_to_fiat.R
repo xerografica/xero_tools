@@ -13,14 +13,13 @@ str(convert.df)
 # Convert date to correct format
 convert.df$Date.corr <- as.Date(x = convert.df$Date, tryFormats = c("%b %d, %Y"))
 
-# Confirm ok
-head(convert.df[, c("Date.corr", "Date")])
-tail(convert.df[, c("Date.corr", "Date")])
+# # Confirm ok
+# head(convert.df[, c("Date.corr", "Date")])
+# tail(convert.df[, c("Date.corr", "Date")])
 
 # Keep only needed cols
 convert.df <- convert.df[, c("Date.corr", "Price")]
 str(convert.df)
-
+head(convert.df)
 
 ### Go to combine_crypto_and_NFT_activity.R
-

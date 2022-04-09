@@ -1,8 +1,6 @@
-# Approximate fiat dollar value of tezos acquisition
-# Uses the Average Method for tax purposes
+# Approximate fiat dollar value of crypto acquisition
+# Uses the Average Method (tax term)
 # No guarantees of usefulness, generally just for the author's purposes
-
-# No guarantees provided
 # Run all from main repo
 
 # Clear working space
@@ -28,6 +26,7 @@ username <- "xerografica"
 demo.version <- "no"
 #demo.version <- "yes"
 
+# Update wallet activity FN for demo version
 if(demo.version=="yes"){
   
   wallet_activity.FN <- "input/demo_activity.csv"
@@ -39,4 +38,4 @@ initial.value <- 0
 # Set the initial per coin volume (0 if no coin)
 initial.volume <- 0
 
-# GO TO import_crypto_buys.R
+# GOTO import_crypto_buys.R
