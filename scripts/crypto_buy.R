@@ -3,8 +3,8 @@
 crypto_buy <- function(df = all.df, position = "NA", transaction_index = "NA"){
   # Position can be initial or subsequent
   
-  i <- transaction_index
-  print(i)
+    i <- transaction_index
+    print(paste0("Operating on the transaction ", i))
   
     date_of_withdrawal <- NULL; daily_coin_price <- NULL; 
     
@@ -15,6 +15,7 @@ crypto_buy <- function(df = all.df, position = "NA", transaction_index = "NA"){
     # What was the coin worth that day? 
     daily_coin_price <- convert.df[convert.df$Date.corr==date_of_withdrawal, "Price"]
     print(paste0("Today the fiat value per coin is: ", daily_coin_price, " ", currency))
+    df[r , "daily_price_crypto"] <- daily_coin_price
     
     # What is your total spend amount in fiat? 
     amt_spent_fiat <- df[i,"amount"] * daily_coin_price
