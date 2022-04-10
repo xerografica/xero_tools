@@ -7,7 +7,7 @@ This is an experimental repository specifically designed for the needs of the au
 Items not handled yet as of current version:       
 - burning
 - transferred NFTs (OTC; not bought) are removed
-
+- objkt.com collections need a more robust way of tracking since all start at #0
 
 ### 00. Setup
 To use this repository, you will the following items:     
@@ -80,4 +80,4 @@ Run the script `scripts/combine_crypto_and_NFT_activity.R`.
 This script will bring in the withdrawal history and the NFT activity and combine them into all.df, which is the input for the analysis.       
 
 Go to `calc_loop.R` to complete the table.       
-
+This loop calls crypto_buy() or nft_activity() functions.       
