@@ -1,10 +1,10 @@
-# Calculate per transaction
-
+# Calculate per transaction, a loop that calls crypto_buy() or nft_activity() functions
+# Requires that combine_crypto_and_NFT_activity.R was already run
 
 # Broadly, per line
 head(all.df)
 
-# Loop
+# Loop over each line item, running either the crypto or nft calculation function
 completed_table.df <- NULL
 for(r in 1:nrow(all.df)){
   
