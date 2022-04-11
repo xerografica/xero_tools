@@ -4,14 +4,24 @@
 
 This is an experimental repository specifically designed for the needs of the author(s) and comes with no guarantees for other uses.     
 
-Items not handled yet as of current version:       
-- burning
-- transferred NFTs (OTC; not bought) are removed
-- objkt.com collections need a more robust way of tracking since all start at #0
+Items not handled yet as of current version but planned (in order of urgency):       
+- currently assumes that your first transaction of the year is a crypto buy
+- currently assumes that *no crypto has been sold directly to fiat, only used for NFTs*
+- secondary sale assumes that the NFT was bought in the same year
+- secondary sale occurs and assumes that ALL buys of the same objkt were bought before any sales  
+- currently assumes that the 'Withdrawal of crypto' table indicates that the crypto was bought that day     
+- burning should be considered a loss
+- transferred NFTs (OTC; not bought) are currently removed (therefore ignored)
+- need to set up method of tracking which NFTs were sold and kept (inventory); this will be important for year 2 of system
+- add multiple wallet functionality
+- objkt.com collections may need a more robust way of tracking since all start at #0
+
+Note: this repo has only been tested on tezos and hic et nunc/ teia/ objkt.com objkts.      
+Note: there has only been preliminary testing so far.       
 
 ### 00. Setup
 To use this repository, you will the following items:     
-i) tezos-CAD or -USD daily conversion
+i) tezos-CAD, -USD, or other fiat daily conversion table           
 Obtain from the following site:        
 https://www.investing.com/indices/investing.com-xtz-cad-historical-data     
 Use the 'Historical Data' option, select the entire year, and export to csv.    
@@ -19,9 +29,7 @@ Use the 'Historical Data' option, select the entire year, and export to csv.
 ii) wallet activity         
 Obtained from NFTbiker tools `https://nftbiker.xyz/`       
 
-iii) Withdrawals of tezos from exchanges          
-Note: this is currently assuming that the day that you purchase the tezos from the exchange you also withdrew the tezos. This will be improved with future iterations.        
-
+iii) Withdrawals of crypto from exchanges          
 *Important*: this must be titled in the following format:       
 `<marketplace>_withdrawal_history_<YYYY-MM-DD>.csv`        
 
@@ -54,12 +62,15 @@ initial.volume   # initial volume of your coin at the start of the year.
 ``` 
 If you are testing the demo version, change the variable demo.version to "yes". This will use the test data (`demo_activity.csv`).       
 
-Run `import_crypto_buys.R` to create withdrawal.df, which contains the withdrawal details of your coin off the exchange, and assumes that the acquisition of the coin occurred on that day. Generates `withdrawal.df`.         
 
-Run `import_NFT_activity.R` to import your wallet buy/ sell activity of NFTs.      
-(todo: add multiple wallet activity functionality)      
+#### Load details of crypto acquisitions
+Source `import_crypto_buys.R` to create withdrawal.df, which contains the acquisition details of your coin. Generates `withdrawal.df`.         
 
-Run `import_crypto_to_fiat.R` to bring in your crypto-fiat conversion table.      
+#### Load NFT activity
+Source `import_NFT_activity.R` to import your wallet buy/ sell activity of NFTs.      
+
+#### Load the crypto-fiat conversion table
+Source `import_crypto_to_fiat.R` to bring in your crypto-fiat conversion table.      
 
 Format:     
 | Date | Price | Open | High | Low | Vol. | Change.. |
@@ -76,8 +87,12 @@ Inputs are:
 `activity.df`       
 `convert.df`       
 
-Run the script `scripts/combine_crypto_and_NFT_activity.R`.        
-This script will bring in the withdrawal history and the NFT activity and combine them into all.df, which is the input for the analysis.       
+Source `scripts/combine_crypto_and_NFT_activity.R`.        
+This script will bring in the crypto acquisition history and the NFT activity and combine them into all.df, which is the input for the analysis.       
 
-Go to `calc_loop.R` to complete the table.       
-This loop calls crypto_buy() or nft_activity() functions.       
+Source `calc_loop.R` to complete the table. This loop calls `crypto_buy()` or `nft_activity()` functions.       
+This will output the final table, which can be used to complete any assessment of gains and losses.          
+Note: if any issues are spotted (everything is recorded in the output table), please let the developer know.           
+
+
+
