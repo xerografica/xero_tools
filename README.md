@@ -2,9 +2,9 @@
 
 **Currently In Development Mode Only**
 
-This is an experimental repository specifically designed for the needs of the author(s) and comes with no guarantees for other uses.     
+This is an experimental repository specifically designed for the needs of the author(s) and comes with no guarantees for other uses. This is NOT tax software, and not done by a professional, it is just an experiment and I am simply trying to understand how the Average method of determining gains and losses works for NFTs and crypto. Please keep this in mind.        
 
-This repo takes as inputs buys of a crypto, and buys of NFTs, then determines (using the AVERAGE METHOD, not FIFO/ LIFO), gains and losses of each transaction/ activity.       
+With that said, this repo takes as inputs buys of a crypto, and buys of NFTs, then determines (using the AVERAGE METHOD, not FIFO/ LIFO), gains and losses of each transaction/ activity.       
 
 Items not handled yet as of current version but planned (in order of urgency):       
 - currently assumes that your first transaction of the year is a crypto buy
