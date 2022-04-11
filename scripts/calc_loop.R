@@ -36,3 +36,9 @@ for(r in 1:nrow(all.df)){
   
   
 }
+
+# Then save out your records
+write.table(x = all.df, file = "output/all_results.txt", quote = F, sep = "\t", col.names = T, row.names = F)
+
+
+
