@@ -15,55 +15,49 @@ crypto_buy <- function(df = all.df, position = "NA", transaction_index = "NA"){
     # What was the coin worth that day? 
     daily_coin_price <- convert.df[convert.df$Date.corr==date_of_withdrawal, "Price"]
     print(paste0("Today the fiat value per coin is: ", daily_coin_price, " ", currency))
-    df[r , "daily_price_crypto"] <- daily_coin_price
+    df[i , "daily_price_crypto"] <- daily_coin_price # retain this info in the df
     
     # What is your total spend amount in fiat? 
-    amt_spent_fiat <- df[i,"amount"] * daily_coin_price
-    print(paste0("On this transaction, you have spent: ", amt_spent_fiat, " ", currency))
+    amt_spent_fiat <- df[i,"amount"] * daily_coin_price # number coin x price
+    print(paste0("On this transaction, ", amt_spent_fiat, " ", currency, " was spent"))
+    df$amt_spent_fiat[i] <- amt_spent_fiat           # retain this info in the df
     
-    # Retain this info in the df
-    print("Retain the spent amount and the volume purchased")
-    df$amt_spent_fiat[i] <- amt_spent_fiat  # Retain activity spent fiat
-    df$trade_vol[i] <- df$amount[i] # Retain volume purchased
-    df$trade_mean_price[i] <- daily_coin_price # Trade mean price (amount paid per coin)
+    # What is the volume of crypto in this transaction? 
+    df$trade_vol[i] <- df$amount[i]                  # retain this info in the df
     
+    # What is the average price you paid for each coin? 
+    df$trade_mean_price[i] <- daily_coin_price       # retain this info in the df
+    #TODO: is this redundant? 
+    
+    #### Coin balance ####
     # Consider this activity and those before, what is your current total vol of coin?
-    # If it is the first record of the year (position = initial), add the initial volume to the amount currently withdrawn
+    # First transaction of the year? Add the initial volume to the amount currently withdrawn
     if(df[i, "position"]=="initial"){
       
+      # Calculate your new current coin volume
       df$current.crypto.vol[i] <- initial.volume + df$amount[i]
-      print(paste0("This is the initial transaction, adding initial volume to the current transaction amount"))
-      print("Retaining this value")
+      print(paste0("This is the initial transaction, adding initial volume, (", initial.volume
+                   , ") to the current transaction amount: ", df$current.crypto.vol[i]))
       
-      # Calculate your overall mean price of the coin to-date moving forward
+      # Calculate your new current average coin price (overall) moving forward
       df$current.crypto.val[i] <- ((df$trade_mean_price[i] * df$trade_vol[i]) + (initial.value * initial.volume)) / df$current.crypto.vol[i]
       
-      # If it is not the first record of the year, add the current amount to the previous total
+    # If it is not the first record of the year, add the current amount to the previous total
     }else if(df[i, "position"]=="subsequent"){
       
-      # #### TODO #####
-      # current.vol <- all.df[(slice-1), "current.crypto.vol"]
-      # current.val <- all.df[(slice-1), "current.crypto.val"]
-      # 
-      # df$current.crypto.vol[i] <- current.vol + df$amount[i]
-      # 
+      # Update the total volume of crypto after this buy
+      df$current.crypto.vol[i] <- df[i-1, "current.crypto.vol"] + df$amount[i]
       
-      # Calculate your overall mean price of the coin to-date moving forward
-      df$current.crypto.val[i] <- ((df$trade_mean_price[i] * df$trade_vol[i]) + 
-                                             (df$current.crypto.val[i-1] * df$current.crypto.vol[i-1])) / 
+      # Reporting
+      print(paste0("This is a subsequent crypto buy, adding the current transaction amount: "
+                     , df$amount[i], " to the previous volume, (", df[i-1, "current.crypto.vol"], ")"
+                    ))
+      
+      # Calculate your new current average coin price (overall) moving forward
+      df$current.crypto.val[i] <- ((df$trade_mean_price[i] * df$trade_vol[i]) + (df[i-1, "current.crypto.val"] * df[i-1, "current.crypto.vol"])) / 
         df$current.crypto.vol[i]
-      
-    }
-    
-    # Not using this method anymore, writing into the actual df
-    # # Save this round into the new, completed df
-    # completed_table.df <- rbind(completed_table.df, df[i,])
-    # 
-    # completed_table.df
-    # 
-    # assign(x = "completed_table.df", value = completed_table.df, envir = .GlobalEnv)
-    # /END/ Not using this method anymore, writing into the actual df
 
+    }
     
     assign(x = "all.df", value = df, envir = .GlobalEnv)
     
