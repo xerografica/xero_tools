@@ -4,6 +4,8 @@
 
 This is an experimental repository specifically designed for the needs of the author(s) and comes with no guarantees for other uses.     
 
+This repo takes as inputs buys of a crypto, and buys of NFTs, then determines (using the AVERAGE METHOD, not FIFO/ LIFO), gains and losses of each transaction/ activity.       
+
 Items not handled yet as of current version but planned (in order of urgency):       
 - currently assumes that your first transaction of the year is a crypto buy
 - currently assumes that *no crypto has been sold directly to fiat, only used for NFTs*
