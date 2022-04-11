@@ -26,6 +26,11 @@ username <- "xerografica"
 demo.version <- "no"
 #demo.version <- "yes"
 
+# Set the initial per coin value (0 if no coin)
+initial.value <- 0
+# Set the initial per coin volume (0 if no coin)
+initial.volume <- 0
+
 # Update wallet activity FN for demo version
 if(demo.version=="yes"){
   
@@ -33,9 +38,13 @@ if(demo.version=="yes"){
   
 }
 
-# Set the initial per coin value (0 if no coin)
-initial.value <- 0
-# Set the initial per coin volume (0 if no coin)
-initial.volume <- 0
+# Source functions applied by program
+source("scripts/crypto_buy.R")
+source("scripts/nft_activity.R")
 
-# GOTO import_crypto_buys.R
+# Run steps
+source("scripts/import_crypto_buys.R")
+source("scripts/import_NFT_activity.R")
+source("scripts/import_crypto_to_fiat.R")
+source("scripts/combine_crypto_and_NFT_activity.R")
+source("scripts/calc_loop.R")
