@@ -4,11 +4,15 @@ activity.df <- read.delim(file = wallet_activity.FN, header = TRUE, sep = ",")
 head(activity.df)
 str(activity.df)
 
+# Correct date to YYYY-MM-DD
 activity.df$Date.corr <- as.Date(x = activity.df$Date, tryFormats = c("%y-%m-%d %H"))
 
 ## Confirming date formatting worked correctly 
 # head(activity.df[c("Date", "Date.corr")])
 # tail(activity.df[c("Date", "Date.corr")])
+
+# Temporary fix for the renamed 'Token' to now 'Objkt' in the readout
+colnames(activity.df)[which(colnames(activity.df)=="Objkt")] <- "Token"
 
 # Keep specific columns
 activity.df <- activity.df[,c("Date.corr", "Token", "Buyer", "Creator", "Type", "Ed.", "Swap", "Total")]
