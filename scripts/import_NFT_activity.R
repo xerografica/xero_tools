@@ -30,4 +30,5 @@ activity.df <- activity.df[activity.df$Total!="OTC", ]
 head(activity.df)
 #TODO: Need to deal with ### OTCs (for now remove them)
 
-# GOTO: combine_crypto_and_NFT_activity.R
+# GOTO: "scripts/import_crypto_to_fiat.R"
+
