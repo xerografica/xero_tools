@@ -19,11 +19,13 @@ activity.df <- activity.df[,c("Date.corr", "Token", "Buyer", "Creator", "Type", 
 colnames(activity.df)[1] <- "Date"
 
 # Limit by year
+print(paste0("You have chosen to only consider **", year, "** NFT activity"))
 activity.df <- activity.df[grep(pattern = year, x = activity.df$Date), ]
 head(activity.df)
 tail(activity.df)
 
 # Remove OTC
+print("Warning: free transfer NFTs are not yet considered in this pipeline, removing OTC")
 activity.df <- activity.df[activity.df$Total!="OTC", ]
 head(activity.df)
 #TODO: Need to deal with ### OTCs (for now remove them)
