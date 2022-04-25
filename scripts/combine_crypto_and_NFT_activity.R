@@ -1,4 +1,5 @@
 # Run after running import_crypto_buys.R, import_NFT_activity.R, and import_crypto_to_fiat.R
+print("These are your data inputs")
 head(withdrawal.df) # from import_crypto_buys.R 
 head(activity.df)   # from import_NFT_activity.R
 head(convert.df)    # from_crypto_to_fiat.R
@@ -39,6 +40,7 @@ all.df <- rbind(withdrawal.df, activity.df)
 str(all.df)
 
 # Confirm the size is correct
+print("Size of crypto transactions, NFT transactions, then your collected data")
 dim(withdrawal.df)
 dim(activity.df)
 dim(all.df)
@@ -71,9 +73,11 @@ all.df$daily_price_crypto <- as.numeric(rep(x = NA, times = nrow(all.df))) # Ret
 # Create a vector that indicates whether the transaction is the initial or a subsequent
 all.df$position <- c("initial", rep("subsequent", times = (nrow(all.df)-1) ))
 head(all.df)
+tail(all.df)
 
 # Create a backup
 all.df.bck <- all.df
 #all.df <- all.df.bck # RESTORE POINT
 
 # GOTO calc_loop.R
+
