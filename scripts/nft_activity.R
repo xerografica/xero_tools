@@ -146,7 +146,39 @@ nft_activity <- function(df = all.df, position = "NA", transaction_index = "NA")
     all.df$inventory[i] <- 1
     
   
-  } 
+  ##### Buy back of a creator's NFT #####
+  # If this was a buy of the creators own NFT 
+  }else if(df$Buyer[i]=="creator" & df$Creator[i]==username & df$Type[i]=="buy"){
+  
+  print("This was a buy back of the NFT by the user")
+  
+  # Buying means crypto is sold to acquire the NFT
+  # How much fiat was needed to buy the NFT? 
+  crypto.sale.amt  <- abs(df$Total[i]) * daily_coin_price # Total price of the NFT in fiat
+  
+  # How much does this amount of fiat go for in your current average price? 
+  crypto.value.amt <- abs(df$Total[i]) * df$current.crypto.val[i-1] # What is the number of coin worth in your wallet? 
+  
+  # How much difference between when you bought the AMOUNT of crypto and when you sold it today to buy the NFT? 
+  gains_from_selling_crypto_for_NFT <- crypto.sale.amt - crypto.value.amt # Amount in fiat
+  
+  # Add to the table
+  df$gains.crypto[i] <- gains_from_selling_crypto_for_NFT
+  
+  # Remove the sold crypto from your total volume
+  df$current.crypto.vol[i] <- df$current.crypto.vol[i-1] - abs(df$Total[i])
+  
+  # Also record the amount in fiat paid for the NFT so you can consider gains when you resale it
+  df[i, "fiat.val.of.NFT.indiv"] <- abs(df[i, "amt_spent_fiat"])
+  
+  # There is no change to the average price paid per coin, only the total vol, and so carry forward the 'current.crypto.val'
+  df$current.crypto.val[i] <- df$current.crypto.val[i-1]
+  
+  # Add indicator that this objkt is in your inventory
+  all.df$inventory[i] <- 1
+  
+  
+}
 
   assign(x = "all.df", value = df, envir = .GlobalEnv)
 
