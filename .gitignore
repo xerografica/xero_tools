@@ -1,6 +1,7 @@
 .DS_Store
 .Rhistory
 *.csv
+*.xlsx
 *.txt
 *.swp
 *#
