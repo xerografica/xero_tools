@@ -1,10 +1,8 @@
 # xero_tools
 
-**Currently In Development Mode Only**
+This repo is specifically designed for the needs of the author(s) and comes with no guarantees for other uses.      
 
-This is an experimental repository specifically designed for the needs of the author(s) and comes with no guarantees for other uses. This is NOT tax software, and not done by a professional, it is just an experiment and I am simply trying to understand how the Average method of determining gains and losses works for NFTs and crypto. Please keep this in mind.        
-
-With that said, this repo takes as inputs buys of a crypto, and buys of NFTs, then determines (using the AVERAGE METHOD, not FIFO/ LIFO), gains and losses of each transaction/ activity.       
+This repo takes as inputs buys of a crypto, and buys of NFTs, then determines (using the AVERAGE METHOD, not FIFO/ LIFO), gains and losses of each transaction/ activity.       
 
 Items not handled yet as of current version but planned (in order of urgency):       
 - currently assumes that your first transaction of the year is a crypto buy
@@ -18,9 +16,7 @@ Items not handled yet as of current version but planned (in order of urgency):
 - add multiple wallet functionality
 - objkt.com collections may need a more robust way of tracking since all start at #0
 
-Note: this repo has only been tested on tezos and hic et nunc/ teia/ objkt.com objkts.      
-Note: there has only been preliminary testing so far.       
-
+## Tezos Transactions
 ### 00. Setup
 To use this repository, you will the following items:     
 i) tezos-CAD, -USD, or other fiat daily conversion table           
@@ -44,6 +40,11 @@ iii) Withdrawals of crypto from exchanges
 You can have as many different withdrawals from different exchanges, as long as they are all in this format. They will all be imported and sorted by date.       
 
 Copy these three items into the `inputs` folder.      
+
+iv) (optional) Crypto sales        
+Build as above (iii), name `tezos_sales.csv`       
+
+
 
 
 ### 01. Initiate and Load inputs
