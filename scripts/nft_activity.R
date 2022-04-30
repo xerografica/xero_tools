@@ -13,15 +13,20 @@ nft_activity <- function(df = all.df, position = "NA", transaction_index = "NA")
   ### TODO: Correct variable name ###
   
   # Coin's value on date of transaction? 
-  daily_coin_price <- convert.df[convert.df$Date.corr==date_of_withdrawal, "Price"]
+  daily_coin_price <- convert.df[convert.df$Date==date_of_withdrawal, "Price"]
   print(paste0("Today the fiat value per coin is: ", daily_coin_price, " ", currency))
   df[i , "daily_price_crypto"] <- daily_coin_price # retain this info in the df
   #### TODO: This constant formula should be done in the combine script, not here
   
   # What is the total fiat amount?  
-  amt_spent_fiat <- df[i,"Total"] * daily_coin_price
+  amt_spent_fiat <- df[i,"Total"] * df[i , "daily_price_crypto"]
   print(paste0("On this transaction, ", amt_spent_fiat, " ", currency, " was spent"))
   df$amt_spent_fiat[i] <- amt_spent_fiat           # retain this info in the df
+  
+  # What is the total spend amount in fiat in the wallet? 
+  wallet_spent_fiat <- df[i,"Total"] * df$current.crypto.val[i] # number coin x price
+  print(paste0("The wallet fiat price of this transaction: ", wallet_spent_fiat, " ", currency))
+  df$wallet_spent_fiat[i] <- wallet_spent_fiat           # retain this info in the df
   
   
   ##### Primary Sale #####
@@ -126,6 +131,7 @@ nft_activity <- function(df = all.df, position = "NA", transaction_index = "NA")
     
     # How much does this amount of fiat go for in your current average price? 
     crypto.value.amt <- abs(df$Total[i]) * df$current.crypto.val[i-1] # What is the number of coin worth in your wallet? 
+    df$wallet_spent_fiat[i] <- crypto.value.amt # Record the cost from your wallet (relative)
     
     # How much difference between when you bought the AMOUNT of crypto and when you sold it today to buy the NFT? 
     gains_from_selling_crypto_for_NFT <- crypto.sale.amt - crypto.value.amt # Amount in fiat
