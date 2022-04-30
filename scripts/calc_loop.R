@@ -2,7 +2,7 @@
 # Requires that combine_crypto_and_NFT_activity.R was already run
 
 # Broadly, per line
-head(all.df)
+head(all.df, n = 10)
 
 # Loop over each line item, running either the crypto or nft calculation function
 completed_table.df <- NULL
