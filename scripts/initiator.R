@@ -21,7 +21,7 @@ input_convert.FN <- "input/Tezos CAD Historical Data.csv"
 currency <- "CAD"
 coin <- "XTZ"
 year <- 2021
-wallet_activity.FN <- "input/activity.csv"
+wallet_activity.FN <- "input/activity_tz1SNTGS7rHpCqnGbwTjjnndaE1bzbbMTfmJ.csv"
 username <- "xerografica"
 demo.version <- "no"
 #demo.version <- "yes"
@@ -44,6 +44,7 @@ source("scripts/nft_activity.R")
 
 # Run steps
 source("scripts/import_crypto_buys.R")
+source("scripts/import_crypto_sells.R") # if relevant
 source("scripts/import_NFT_activity.R")
 source("scripts/import_crypto_to_fiat.R")
 source("scripts/combine_crypto_and_NFT_activity.R")
