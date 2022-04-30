@@ -46,4 +46,4 @@ withdrawal.df <- withdrawal.df[grep(pattern = year, x = withdrawal.df$date), ]
 # Here is the details of crypto coin acquisition
 withdrawal.df
 
-# GOTO: import_NFT_activity.R
+# GOTO: import_crypto_sells.R if exists, OR import_NFT_activity.R
