@@ -111,6 +111,7 @@ tail(all_data.df)
 # Fix date
 all_data.df$date.corr <- as.Date(x = all_data.df$date, tryFormats = c("%d-%m-%y"))
 head(all_data.df)
+tail(all_data.df)
 
 # Sort by date
 all_data.df <- all_data.df[order(all_data.df$date.corr, decreasing = F),]
@@ -137,12 +138,11 @@ all_data.df
 all_data.df <- all_data.df[grep(pattern = target_year, x = all_data.df$date), ]
 
 
-
-
 #### CALCULATING GAINS AND LOSSES FOR BUYS AND SELLS ####
 coin.tracking <- list()
 crypto_in_play <- unique(c(all_data.df$from_currency, all_data.df$to_currency))
 crypto_in_play <- crypto_in_play[grep(pattern = currency, x = crypto_in_play, invert = T)]
+crypto_in_play
 
 # Create empty list
 for(i in 1:length(crypto_in_play)){
@@ -194,42 +194,55 @@ for(i in 1:nrow(all_data.df)){
   print(i)
   
   # Buying side is dealt with first
+  # This is only relevant if CRYPTO is bought, not if Crypto is simply moved to FIAT
+  
   # Obtain variables for easy-use
   bought_coin <- all_data.df$to_currency[i]
   bought_amt <-  all_data.df$to_amount[i]
   
-  # Reporting
-  print(paste0("You have bought ", bought_amt, " ", bought_coin))
-  
-  # What is the daily value of the bought coin? (FIAT PER COIN)
-  all_data.df$bought_coin_daily_val[i] <- all_conversions.df[all_conversions.df$coin==bought_coin &
-                                                               all_conversions.df$date==all_data.df$date[i], "Price"]
-  print(paste0("Your ", bought_coin, " is worth ", all_data.df$bought_coin_daily_val[i], " fiat today (", all_data.df$date[i], ")"))
-  
-  # Adjust average 
-  print("Adjusting average value based on your holdings and new acquisition")
-  # (FIAT per COIN x vol COIN) + (FIAT per COIN x vol COIN) = TOTAL FIAT INVESTED
-  # TOTAL FIAT INVESTED / TOTAL COIN = AVERAGE COST
-  total.fiat.invested <- (coin.tracking[[bought_coin]]$val * coin.tracking[[bought_coin]]$vol) + (all_data.df$bought_coin_daily_val[i] * all_data.df$to_amount[i])
-  print(paste0("You have invested in total ", round(total.fiat.invested, digits = 2), " fiat in ", bought_coin))
-  all_data.df$total_fiat_invested_bought[i] <- total.fiat.invested
-  
-  total.vol.holding   <- (coin.tracking[[bought_coin]]$vol + all_data.df$to_amount[i])
-  print(paste0("You are holding ", round(total.vol.holding, digits = 4), " in ", bought_coin))
-  
-  new.fiat.per.coin   <- total.fiat.invested / total.vol.holding
-  new.fiat.per.coin
-  print(paste0("Your new average value of ", bought_coin, " is ", round(new.fiat.per.coin, digits = 3), " fiat per coin"))
-  
-  # Update current value and volume
-  coin.tracking[[bought_coin]]$val <- new.fiat.per.coin
-  coin.tracking[[bought_coin]]$vol <- total.vol.holding
-  # Also update df for transparency
-  all_data.df$bought_coin_new_vol[i] <- total.vol.holding
-  all_data.df$bought_coin_new_val[i] <- new.fiat.per.coin
-  
-  all_data.df$transaction_spend_fiat[i] <- (all_data.df$bought_coin_daily_val[i] * all_data.df$to_amount[i])
-  
+  if(bought_coin==currency){
+    
+    print("This is a sale out of crypto into fiat, so no buying of other crypto is considered")
+    
+  }else if(bought_coin!=currency){
+    
+    print("This transaction involves acquiring more crypto, so will need to adjust values")
+    
+    # Reporting
+    print(paste0("You have bought ", bought_amt, " ", bought_coin))
+    
+    # What is the daily value of the bought coin? (FIAT PER COIN)
+    all_data.df$bought_coin_daily_val[i] <- all_conversions.df[all_conversions.df$coin==bought_coin &
+                                                                 all_conversions.df$date==all_data.df$date[i], "Price"]
+    print(paste0("Your ", bought_coin, " is worth ", all_data.df$bought_coin_daily_val[i], " fiat today (", all_data.df$date[i], ")"))
+    
+    # Adjust average 
+    print("Adjusting average value based on your holdings and new acquisition")
+    
+    # (FIAT per COIN x vol COIN) + (FIAT per COIN x vol COIN) = TOTAL FIAT INVESTED
+    # TOTAL FIAT INVESTED / TOTAL COIN = AVERAGE COST
+    total.fiat.invested <- (coin.tracking[[bought_coin]]$val * coin.tracking[[bought_coin]]$vol) + (all_data.df$bought_coin_daily_val[i] * all_data.df$to_amount[i])
+    print(paste0("You have invested in total ", round(total.fiat.invested, digits = 2), " fiat in ", bought_coin))
+    all_data.df$total_fiat_invested_bought[i] <- total.fiat.invested
+    
+    total.vol.holding   <- (coin.tracking[[bought_coin]]$vol + all_data.df$to_amount[i])
+    print(paste0("You are holding ", round(total.vol.holding, digits = 4), " in ", bought_coin))
+    
+    new.fiat.per.coin   <- total.fiat.invested / total.vol.holding
+    new.fiat.per.coin
+    print(paste0("Your new average value of ", bought_coin, " is ", round(new.fiat.per.coin, digits = 3), " fiat per coin"))
+    
+    # Update current value and volume
+    coin.tracking[[bought_coin]]$val <- new.fiat.per.coin
+    coin.tracking[[bought_coin]]$vol <- total.vol.holding
+    
+    # Also update df for transparency
+    all_data.df$bought_coin_new_vol[i] <- total.vol.holding
+    all_data.df$bought_coin_new_val[i] <- new.fiat.per.coin
+    
+    all_data.df$transaction_spend_fiat[i] <- (all_data.df$bought_coin_daily_val[i] * all_data.df$to_amount[i])
+    
+  }
   
   ## Selling crypto to get crypto
   # Buy from fiat? 
@@ -250,16 +263,16 @@ for(i in 1:nrow(all_data.df)){
     # What is the daily value of the coin in fiat? (FIAT PER COIN)
     spend_crypto_daily_price <- all_conversions.df[all_conversions.df$coin==spend_crypto_coin &
                                                      all_conversions.df$date==all_data.df$date[i], "Price"]
-    all_data.df$daily_coin_val[i] <- spend_crypto_daily_price # add to df
+    all_data.df$sold_coin_daily_val[i] <- spend_crypto_daily_price # add to df
     
-    # How much did you make when you spent this crypto? 
+    # How much did you make when you spent this crypto?  (i.e., What is the market value of this volume?)
     daily_fiat_cashed_out <- spend_crypto_amt * spend_crypto_daily_price
-    print(paste0("By spending  ", round(spend_crypto_amt, digits = 2), " ", spend_crypto_coin, " today you obtained ", round(daily_fiat_cashed_out, digits = 2), " fiat"))
+    print(paste0("By spending  ", round(spend_crypto_amt, digits = 4), " ", spend_crypto_coin, " today you obtained ", round(daily_fiat_cashed_out, digits = 2), " fiat"))
     all_data.df$cash_out_fiat[i] <- daily_fiat_cashed_out
     
     # How much did you originally spend to get this amount of this crypto? (based on average)
     orig.fiat.of.this.vol <- spend_crypto_amt * coin.tracking[[spend_crypto_coin]]$val
-    print(paste0("You originally spent ", round(orig.fiat.of.this.vol, digits = 2), " fiat to get this amount"))
+    print(paste0("You originally spent ", round(orig.fiat.of.this.vol, digits = 4), " fiat to get this amount"))
     all_data.df$original_spend_fiat[i] <- orig.fiat.of.this.vol
     
     # Add gains to the spreadsheet
