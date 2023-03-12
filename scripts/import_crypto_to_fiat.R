@@ -11,7 +11,7 @@ convert.df$Price <- as.numeric(x = convert.df$Price)
 str(convert.df)
 
 # Convert date to correct format
-convert.df$Date <- as.Date(x = convert.df$Date, tryFormats = c("%b %d, %Y"))
+convert.df$Date <- as.Date(x = convert.df$Date, tryFormats = c("%m/%d/%Y"))
 #colnames(convert.df)[which(colnames(convert.df)=="Date.corr")] <- "Date" # I think this is done earlier now
 head(convert.df)
 
