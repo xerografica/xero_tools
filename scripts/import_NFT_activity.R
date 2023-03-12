@@ -5,11 +5,13 @@ head(activity.df)
 str(activity.df)
 
 # Correct date to YYYY-MM-DD
-activity.df$Date.corr <- as.Date(x = activity.df$Date, tryFormats = c("%y-%m-%d %H"))
+activity.df$Date <- gsub(pattern = "\\ .*", replacement = "", activity.df$Date) # remove anything after a space (i.e., time)
+activity.df$Date.corr <- as.Date(x = activity.df$Date, tryFormats = c("%m/%d/%y"))
+activity.df$Date.corr <- format(activity.df$Date.corr, "%Y-%m-%d")
 head(activity.df)
 
 # Temporary fix for the renamed 'Token' to now 'Objkt' in the readout
-colnames(activity.df)[which(colnames(activity.df)=="Objkt")] <- "Token"
+# colnames(activity.df)[which(colnames(activity.df)=="Objkt")] <- "Token" # no longer necessary
 
 # Keep specific columns
 activity.df <- activity.df[,c("Date.corr", "Token", "Buyer", "Creator", "Type", "Ed.", "Swap", "Total")]
